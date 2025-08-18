@@ -1,0 +1,104 @@
+<div class="payslip-container">
+        <div class="payslip-header">
+            <h1>Employee Payslip</h1>
+            <p>Official Salary Statement</p>
+            <div class="pay-period">December 2024</div>
+        </div>
+
+        <div class="payslip-content">
+            <!-- Employee Information -->
+            <div class="employee-info">
+                <div class="employee-avatar">JD</div>
+                <div class="employee-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Employee Name</span>
+                        <span class="detail-value">{{payment.employee.firstname}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Employee ID</span>
+                        <span class="detail-value">{{payment.name}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pay Date</span>
+                        <span class="detail-value">{{payment.data.received_at}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pay Summary -->
+            <div class="pay-summary">
+                <h3>Pay Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-value gross">${{payment.data.amount}}</span>
+                        <span class="summary-label">Gross Pay</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value deductions">${{payment.data.fees_charged}}</span>
+                        <span class="summary-label">Total Deductions</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value net">$</span>
+                        <span class="summary-label">Net Pay</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Net Pay -->
+            <div class="net-pay-section">
+                <h3>Net Pay</h3>
+                <div class="net-pay-amount"></div>
+                <p>Amount transferred to your account</p>
+            </div>
+
+            <!-- Transfer Information -->
+            <div class="transfer-info">
+                <h3>Payment Details</h3>
+                <div class="transfer-details">
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Transfer Code</span>
+                            <span class="detail-value">{{payment.id}}</span>
+                        </div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Bank Account</span>
+                            <span class="detail-value">****-****-****-1234</span>
+                        </div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Bank Name</span>
+                            <span class="detail-value">{{payment.data.bank_name}}</span>
+                        </div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Transfer Status</span>
+                            <span class="detail-value" style="color: #28a745; font-weight: bold;">{{payment.data.status}}</span>
+                        </div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Transfer Date</span>
+                            <span class="detail-value">Dec 31, 2024</span>
+                        </div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="detail-item">
+                            <span class="detail-label">Reference</span>
+                            <span class="detail-value">{{payment.data.reference}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-section">
+                <button class="action-btn download-btn" onclick="downloadPayslip()">📥 Download PDF</button>
+                <button class="action-btn print-btn" onclick="printPayslip()">🖨️ Print Payslip</button>
+                <button class="action-btn email-btn" onclick="emailPayslip()">📧 Email Copy</button>
+            </div>
+        </div>
+    </div>
+

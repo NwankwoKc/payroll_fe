@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Signup Form</title>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Create Your Account</h1>
+            <p>Join our professional portal - Complete your registration</p>
+        </div>
+        
+        <div class="signup-content">
+            <div class="form-progress">
+                <div class="progress-step active">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Personal Info</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Employment</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Financial</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
+
+            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <div class="form-sections">
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group" [class.error]="isFieldInvalid('firstname')">
+                                <label for="firstname" class="required">First Name</label>
+                                <input 
+                                    type="text" 
+                                    id="firstname" 
+                                    formControlName="firstname"
+                                    placeholder="Enter your first name">
+                                <div class="validation-error" *ngIf="isFieldInvalid('firstname')">
+                                    First name is required
+                                </div>
+                            </div>
+                            <div class="form-group" [class.error]="isFieldInvalid('lastname')">
+                                <label for="lastname" class="required">Last Name</label>
+                                <input 
+                                    type="text" 
+                                    id="lastname" 
+                                    formControlName="lastname"
+                                    placeholder="Enter your last name">
+                                <div class="validation-error" *ngIf="isFieldInvalid('lastname')">
+                                    Last name is required
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('email')">
+                            <label for="email" class="required">Email Address</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                formControlName="email"
+                                placeholder="Enter your email address">
+                            <div class="validation-error" *ngIf="isFieldInvalid('email')">
+                                <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</span>
+                                <span *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('password')">
+                            <label for="password" class="required">Password</label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                formControlName="password"
+                                placeholder="Create a strong password">
+                            <div class="validation-error" *ngIf="isFieldInvalid('password')">
+                                <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+                                <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group" [class.error]="isFieldInvalid('phonenumber')">
+                                <label for="phone" class="required">Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    id="phone" 
+                                    formControlName="phonenumber"
+                                    placeholder="+1 (555) 123-4567">
+                                <div class="validation-error" *ngIf="isFieldInvalid('phonenumber')">
+                                    Phone number is required
+                                </div>
+                            </div>
+                            <div class="form-group" [class.error]="isFieldInvalid('sex')">
+                                <label for="sex" class="required">Sex</label>
+                                <select id="sex" formControlName="sex">
+                                    <option value="">Select...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                                <div class="validation-error" *ngIf="isFieldInvalid('sex')">
+                                    Please select your sex
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile_image">Profile Image</label>
+                            <div class="file-upload">
+                                <input 
+                                    type="file" 
+                                    id="profile_image" 
+                                    formControlName="profileimage"
+                                    accept="image/*"
+                                    (change)="onFileChange($event)">
+                                <label for="profile_image" class="file-upload-label">
+                                    📷 Click to upload profile image
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employment Information Section -->
+                    <div class="form-section">
+                        <h3>Employment Information</h3>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('department')">
+                            <label for="department" class="required">Department</label>
+                            <select id="department" formControlName="department">
+                                <option value="">Select Department...</option>
+                                <option *ngFor="let dept of department" value={{dept.id}}>{{dept.name}}</option>
+                            </select>
+                            <div class="validation-error" *ngIf="isFieldInvalid('department')">
+                                Please select a department
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('position')">
+                            <label for="position" class="required">Position</label>
+                            <select id="position" formControlName="position">
+                                <option value="">Select Position...</option>
+                                <option *ngFor="let posi of postion" value={{posi.id}}>{{posi.name}}</option>
+                            </select>
+                            <div class="validation-error" *ngIf="isFieldInvalid('position')">
+                                Position is required
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('jobtitle')">
+                            <label for="job_title" class="required">Job Title</label>
+                            <input 
+                                type="text" 
+                                id="job_title" 
+                                formControlName="jobtitle"
+                                placeholder="e.g., Senior Software Engineer">
+                            <div class="validation-error" *ngIf="isFieldInvalid('jobtitle')">
+                                Job title is required
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group" [class.error]="isFieldInvalid('hiredate')">
+                                <label for="hire_date" class="required">Hire Date</label>
+                                <input 
+                                    type="date" 
+                                    id="hire_date" 
+                                    formControlName="hiredate">
+                                <div class="validation-error" *ngIf="isFieldInvalid('hiredate')">
+                                    Hire date is required
+                                </div>
+                            </div>
+                            <div class="form-group" [class.error]="isFieldInvalid('salary')">
+                                <label for="salary" class="required">Salary</label>
+                                <select id="salary" formControlName="salary">
+                                    <option value="">Select Salary Range...</option>
+                                    <option *ngFor="let sala of salary" value={{sala.id}}>{{sala.name}}</option>
+                                </select>
+                                <div class="validation-error" *ngIf="isFieldInvalid('salary')">
+                                    Salary is required
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="experiences">Professional Experience</label>
+                            <textarea 
+                                id="experiences" 
+                                formControlName="experience"
+                                placeholder="Describe your professional experience, previous roles, and achievements...">
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <!-- Financial Information Section -->
+                    <div class="form-section">
+                        <h3>Banking & Financial Information</h3>
+                        
+                        <div class="form-group" [class.error]="isFieldInvalid('bankname')">
+                            <label for="bank_name" class="required">Bank Name</label>
+                            <input 
+                                type="text" 
+                                id="bank_name" 
+                                formControlName="bankname"
+                                placeholder="e.g., First National Bank">
+                            <div class="validation-error" *ngIf="isFieldInvalid('bankname')">
+                                Bank name is required
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group" [class.error]="isFieldInvalid('bank_code')">
+                                <label for="bank_code" class="required">Bank Code / Routing Number</label>
+                                <input 
+                                    type="text" 
+                                    id="bank_code" 
+                                    formControlName="bank_code"
+                                    placeholder="123456789">
+                                <div class="validation-error" *ngIf="isFieldInvalid('bank_code')">
+                                    Bank code is required
+                                </div>
+                            </div>
+                            <div class="form-group" [class.error]="isFieldInvalid('account_number')">
+                                <label for="bank_code" class="required">Account Number</label>
+                                <input 
+                                    type="text" 
+                                    id="account_number" 
+                                    formControlName="account_number"
+                                    placeholder="123456789">
+                                <div class="validation-error" *ngIf="isFieldInvalid('account_number')">
+                                    Account number is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contacts Section -->
+                    <div class="form-section">
+                        <h3>Emergency Contacts</h3>
+                        
+                        <div class="form-group">
+                            <label>Recipients (Emergency Contacts)</label>
+                            <div formArrayName="emergencyContacts" class="recipients-container">
+                                <div 
+                                    *ngFor="let contact of emergencyContacts.controls; let i = index" 
+                                    [formGroupName]="i" 
+                                    class="recipient-item">
+                                    <input 
+                                        type="text" 
+                                        formControlName="name"
+                                        placeholder="Contact Name">
+                                    <input 
+                                        type="text" 
+                                        formControlName="phone"
+                                        placeholder="Phone Number">
+                                    <button 
+                                        type="button" 
+                                        class="remove-recipient" 
+                                        (click)="removeContact(i)"
+                                        [disabled]="emergencyContacts.length === 1">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-recipient" (click)="addContact()">
+                                + Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" (click)="resetForm()">
+                        Reset Form
+                    </button>
+                    <button 
+                        (click) = "onSubmit()"
+                        type="submit" 
+                        class="btn btn-primary"
+                        [disabled]="signupForm.invalid">
+                        Create Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>

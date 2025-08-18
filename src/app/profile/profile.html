@@ -1,0 +1,129 @@
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img [src]="profile.profileimage" class="profile-image">
+            <div class="profile-name">{{profile.firstname}}</div>
+            <div class="profile-title">Senior Software Engineer</div>
+            <div class="profile-department">Information Technology</div>
+        </div>
+        
+        <div class="profile-content">
+            <div class="profile-grid">
+                <!-- Personal Information -->
+                <div class="profile-section">
+                    <h3>Personal Information</h3>
+                    <div class="profile-field">
+                        <label>First Name</label>
+                        <div class="value">{{profile.firstname}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Last Name</label>
+                        <div class="value">{{profile.lastname}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email</label>
+                        <div class="value">{{profile.email}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Phone Number</label>
+                        <div class="value">{{profile.phonenumber}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Sex</label>
+                        <div class="value">{{profile.sex}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Password</label>
+                        <div class="value sensitive">••••••••••••</div>
+                    </div>
+                </div>
+
+                <!-- Employment Information -->
+                <div class="profile-section">
+                    <h3>Employment Details</h3>
+                    <div class="profile-field">
+                        <label>Department</label>
+                        <div class="value">{{profile.employee_department.name}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Position</label>
+                        <div class="value">{{profile.user_position.name}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Hire Date</label>
+                        <div class="value date">March 15, 2020</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Salary</label>
+                        <div class="value currency">{{profile.salary}}</div>
+                    </div>
+                </div>
+
+                <!-- Banking Information -->
+                <div class="profile-section">
+                    <h3>Banking & Payment</h3>
+                    <div class="profile-field">
+                        <label>Bank Name</label>
+                        <div class="value">{{profile.bankname}}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Account Type</label>
+                        <div class="value">Checking Account</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Bank Code</label>
+                        <div class="value sensitive">****-****-5678</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Payments</label>
+                        <div class="value">Direct Deposit - Monthly</div>
+                    </div>
+                </div>
+
+                <!-- Recipients -->
+                <div class="profile-section">
+                    <h3>Emergency Contacts</h3>
+                    <div class="profile-field">
+                        <label>Recipients</label>
+                        <div class="recipients-list">
+                            <div class="recipient-item">
+                                <strong>Sarah Smith</strong> - Spouse<br>
+                                Phone: +1 (555) 987-6543
+                            </div>
+                            <div class="recipient-item">
+                                <strong>Michael Smith</strong> - Brother<br>
+                                Phone: +1 (555) 456-7890
+                            </div>
+                            <div class="recipient-item">
+                                <strong>Emily Johnson</strong> - Friend<br>
+                                Phone: +1 (555) 321-0987
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="profile-section">
+                    <h3>Additional Information</h3>
+                    <div class="profile-field">
+                        <label>Profile Image</label>
+                        <div class="value">default-avatar.jpg</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Last Updated</label>
+                        <div class="value date">July 18, 2025</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Status</label>
+                        <div class="value">Active</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+                <button class="btn btn-secondary" onclick="changePassword()">Change Password</button>
+                <button class="btn btn-secondary" onclick="downloadProfile()">Download PDF</button>
+            </div>
+        </div>
+    </div>

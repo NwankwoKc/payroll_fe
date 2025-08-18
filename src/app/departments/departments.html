@@ -1,0 +1,40 @@
+<div class="departments-container">
+    <div class="departments-header">
+        <h1>Our Departments</h1>
+        <p>Discover the diverse teams and talented professionals that drive our organization forward.</p>
+    </div>
+
+    <div class="departments-content">
+        @if (error) {
+            <div class="error-message">{{ error }}</div>
+        }
+        
+        @if (!isLoaded && !error) {
+            <div class="loading">Loading departments...</div>
+        }
+        
+        @if (isLoaded && !error) {
+            <div class="departments-grid">
+                @for (dep of department; track dep.name) {
+                    <div class="department-card">
+                        <div class="department-header">
+                            <div>
+                                <h3>{{ dep.name }}</h3>
+                                <div class="department-subtitle">{{ dep.location }}</div>
+                            </div>
+                        </div>
+                        <div class="department-description">
+                            Our technology team drives digital transformation and builds cutting-edge solutions.
+                        </div>
+                        <div class="department-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ dep.employees?.length || 0 }}</span>
+                                <div class="stat-label">Team Members</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

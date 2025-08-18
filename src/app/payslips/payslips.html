@@ -1,0 +1,113 @@
+<div class="page-header">
+        <h1>My Payslips</h1>
+        <p>View and manage all your salary statements</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Statistics Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <span class="stat-value">24</span>
+                <span class="stat-label">Total Payslips</span>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filters-title">Filter Payslips</div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Year</label>
+                    <select class="filter-select">
+                        <option>2024</option>
+                        <option>2023</option>
+                        <option>2022</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Month</label>
+                    <select class="filter-select">
+                        <option>All Months</option>
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-select">
+                        <option>All Status</option>
+                        <option>Paid</option>
+                        <option>Pending</option>
+                        <option>Processed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" placeholder="Search payslips...">
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payslips Grid -->
+        <div class="payslips-grid">
+            <!-- Payslip Card 1 -->
+            <div class="payslip-card" *ngFor="let pay of payment">
+                <div class="status-badge status-paid">{{pay.data.status}}</div>
+                <div class="card-header">
+                    <div class="pay-period-card">July 2024</div>
+                    <div class="pay-date">{{pay.data.recieved_at}}</div>
+                </div>
+                <div class="card-body">
+                    <div class="pay-summary-quick">
+                        <div class="quick-stat">
+                            <span class="quick-stat-value gross">{{pay.data.amount}}</span>
+                            <span class="quick-stat-label">Gross</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="quick-stat-value deductions">{{pay.data.fees_charged}}</span>
+                            <span class="quick-stat-label">Deductions</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="quick-stat-value net">$5,412</span>
+                            <span class="quick-stat-label">Net Pay</span>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item-card">
+                            <span class="detail-label-card">Employee ID</span>
+                            <span class="detail-value-card">{{pay.name}}</span>
+                        </div>
+                        <div class="detail-item-card">
+                            <span class="detail-label-card">Department</span>
+                            <span class="detail-value-card">Engineering</span>
+                        </div>
+                        <div class="detail-item-card">
+                            <span class="detail-label-card">Position</span>
+                            <span class="detail-value-card">Senior Developer</span>
+                        </div>
+                        <div class="detail-item-card">
+                            <span class="detail-label-card">Pay Method</span>
+                            <span class="detail-value-card">Direct Deposit</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a [routerLink]="['/profile',pay.id]" class="action-btn-small view-btn">View</a>
+                        <button class="action-btn-small download-btn-small">Download</button>
+                        <button class="action-btn-small email-btn-small">Email</button>
+                    </div>
+                </div>
+            </div>
+        </div>

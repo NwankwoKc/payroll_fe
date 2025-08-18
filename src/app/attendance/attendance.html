@@ -1,0 +1,61 @@
+<div class="attendance-container">
+        <div class="attendance-header">
+            <h1>Attendance System</h1>
+            <p>Track your work hours and manage attendance</p>
+            <div class="current-time" id="currentTime">Loading...</div>
+        </div>
+
+        <div class="attendance-content">
+            <!-- User Information -->
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <div class="user-details">
+                    <h3 id="userName">John Doe</h3>
+                    <p>Employee ID: EMP001 | Department: Technology</p>
+                    <p id="currentStatus">Status: Not Clocked In</p>
+                </div>
+            </div>
+
+            <!-- Attendance Actions -->
+            <div class="attendance-actions">
+                <div class="action-card clock-in">
+                    <div class="action-icon">🕐</div>
+                    <div class="action-title">Clock In</div>
+                    <div class="action-description">Start your work day and begin tracking hours</div>
+                    <button class="action-btn clock-in-btn" id="clockInBtn" onclick="clockIn()">
+                        Clock In Now
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Status Section -->
+            <div class="status-section">
+
+                    <div class="status-item">
+                        <span class="status-value" id="clockInTime">--:--</span>
+                        <div class="status-label">Clock In Time</div>
+                    </div>
+            </div>
+
+            <!-- Attendance History -->
+            <div class="attendance-history">
+                <h3>Recent Attendance History</h3>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Clock In</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- History will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationText">Notification message</span>
+    </div>
