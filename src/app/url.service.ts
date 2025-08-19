@@ -55,7 +55,6 @@ export class Url {
   getsalaryamount<T>(url: string): Observable<T> {
     return this.http.get<T>(`${this.baseURL}${url}`);
   }
-
   // Payment methods
   bulkpayment<T>(url: string, data?: any): Observable<T> {
     return this.http.post<T>(`${this.baseURL}${url}`, data);

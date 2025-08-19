@@ -8,6 +8,8 @@ import { Attendance } from './attendance/attendance';
 import { Payslip } from './payslip/payslip';
 import { Employees } from './employees/employees';
 import { Payslips } from './payslips/payslips';
+import { Paysalary } from './paysalary/paysalary';
+import { Employeereciept } from './employeereciept/employeereciept';
 
 export const routes: Routes = [
     {path:'login',component:Login},
@@ -21,5 +23,7 @@ export const routes: Routes = [
     {path:'payslips',component:Payslips},
     {path:'employees',component:Employees},
     {path:'payslips',component:Payslips},
+    {path:'paysalary',component:Paysalary},
+    {path:'employeereciept',component:Employeereciept},
     {path:'**',component:Login}
 ];
