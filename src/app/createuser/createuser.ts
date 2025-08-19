@@ -150,7 +150,7 @@ error:any
             console.log('Signup successful:', response);
             // Store token in localStorage or a state management service
             localStorage.setItem('uid', response.id);
-            if(response.status === 200){
+            if(response.status === 201){
               this.router.navigate(['/dashboard'])
             }
               },

@@ -20,7 +20,7 @@ export class Payslips implements OnInit {
   ) {}
  ngOnInit() {
     // Get user ID from localStorage
-    this.userId = localStorage.getItem('uid');
+    this.userId = localStorage.getItem('token');
     
     if (!this.userId) {
       console.error('No user ID found in localStorage');
