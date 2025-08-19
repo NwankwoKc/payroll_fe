@@ -36,7 +36,7 @@ export class Flutterwave {
           this.reconnect$.next();
         },
         complete: () => {
-          console.log('WebSocket connection closed');
+          console.log('WebSocket connecwstion closed');
           this.isConnected = false;
           this.reconnect$.next();
         }

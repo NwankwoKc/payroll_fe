@@ -41,7 +41,7 @@ async processAllSalaries() {
     const initialResponse = await this.url.bulkpayment<{data: any}>('/bulkpayment')
       .toPromise();
     this.message = initialResponse?.data.message;
-    
+    console.log(this.message)
     // Optionally unsubscribe after some time or based on condition
     // setTimeout(() => webSocketSubscription.unsubscribe(), 30000);
     console.log(this.paymentResponses)
