@@ -16,7 +16,7 @@
                 <div class="pay-all-section">
                     <div class="total-amount">$<span id="total-amount">45,750.00</span></div>
                     <div class="total-label">Total Monthly Payroll</div>
-                    <button class="pay-all-btn" id="pay-all-btn" onclick="processAllSalaries()">
+                    <button class="pay-all-btn" id="pay-all-btn" (click)="processAllSalaries()">
                         🚀 Pay All Employees
                     </button>
                     <div style="font-size: 12px; color: #666; margin-top: 10px;">
@@ -56,12 +56,12 @@
                 </div>
             </div>
 
-            <div class="receipts-grid" id="receipts-grid">
+            <div class="receipts-grid" id="receipts-grid" *ngFor="let receipt of paymentResponses">
                 <div class="receipt-card">
                     <div class="receipt-header">
-                        <div class="receipt-status">✅ PAID</div>
-                        <div class="receipt-number"></div>
-                        <div class="receipt-date"></div>
+                        <div class="receipt-status">✅ PAID {{receipt.transfer.status}}</div>
+                        <div class="receipt-number">{{receipt.transfer.reference}}</div>
+                        <div class="receipt-date">{{receipt.transfer.completed_at}}</div>
                     </div>
                     <div class="receipt-body">
                         <div class="receipt-employee">
@@ -69,34 +69,31 @@
                             <div class="employee-details">
                                 <h3></h3>
                                 <div class="employee-department"></div>
-                                <div class="employee-id"></div>
+                                <div class="employee-id">{{receipt.transfer.meta}}</div>
                             </div>
                         </div>
                         
                         <div class="receipt-details">
                             <div class="detail-row">
                                 <span class="detail-label">Base Salary:</span>
-                                <span class="detail-value"></span>
+                                <span class="detail-value">{{receipt.transfer.amount}}</span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Bonus & Allowances:</span>
-                                <span class="detail-value"></span>
+                                <span class="detail-value">0</span>
                             </div>
+                        
                             <div class="detail-row">
-                                <span class="detail-label">Gross Salary:</span>
-                                <span class="detail-value"></span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Deductions (10%):</span>
-                                <span class="detail-value"></span>
+                                <span class="detail-label">VAT TAX:</span>
+                                <span class="detail-value">{{receipt.transfer.fees_charged}}</span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Payment Method:</span>
-                                <span class="detail-value"></span>
+                                <span class="detail-value">Transfer</span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Account:</span>
-                                <span class="detail-value"></span>
+                                <span class="detail-value">{{receipt.transfer.account_number}}</span>
                             </div>
                         </div>
 
