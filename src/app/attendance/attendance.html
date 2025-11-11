@@ -1,28 +1,34 @@
+@if (loadstate.loading) {
+<div class="loading-spinner">
+  <img src="/loading.gif">
+</div>
+}
+
+@if (loadstate.error) {
+<div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage?.status}}</h3>
+        <p class="error-message">{{errormessage?.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+</div>
+}  @else {
 <div class="attendance-container">
         <div class="attendance-header">
             <h1>Attendance System</h1>
             <p>Track your work hours and manage attendance</p>
-            <div class="current-time" id="currentTime">Loading...</div>
+            <div class="current-time" id="currentTime"></div>
         </div>
-
+        <p>{{msg}}</p>
         <div class="attendance-content">
-            <!-- User Information -->
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">JD</div>
-                <div class="user-details">
-                    <h3 id="userName">John Doe</h3>
-                    <p>Employee ID: EMP001 | Department: Technology</p>
-                    <p id="currentStatus">Status: Not Clocked In</p>
-                </div>
-            </div>
-
             <!-- Attendance Actions -->
             <div class="attendance-actions">
                 <div class="action-card clock-in">
                     <div class="action-icon">🕐</div>
                     <div class="action-title">Clock In</div>
                     <div class="action-description">Start your work day and begin tracking hours</div>
-                    <button class="action-btn clock-in-btn" id="clockInBtn" onclick="clockIn()">
+                    <button class="action-btn clock-in-btn" id="clockInBtn" (click) = "ClockIn()">
                         Clock In Now
                     </button>
                 </div>
@@ -54,8 +60,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <span id="notificationText">Notification message</span>
-    </div>
+}

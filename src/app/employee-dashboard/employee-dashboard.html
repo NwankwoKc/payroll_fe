@@ -1,0 +1,102 @@
+@if (loadstate.loading) {
+<div class="loading-spinner">
+  <img src="/loading.gif">
+</div>
+} @else {
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div>
+                     <img src= {{profile.profileimage}} class="profile-image">
+                </div>
+                <div class="employee-info">
+                    <h1> {{profile.firstname}}</h1>
+                    <p>{{profile.user_position.name}}</p>
+                    <p style="margin-top: 5px;"><span class="status-badge">● Active</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Current Clock Status Alert -->
+            <div class="alert-box">
+                <div class="alert-icon">⏰</div>
+                <div class="alert-content">
+                    <h3>Current Status: Clocked Out</h3>
+                    <p>Last clock in: Today at 8:45 AM | Last clock out: Today at 5:30 PM</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn action-btn-primary" (click) = "clockin()">
+                    <div class="action-icon">🕐</div>
+                    <div>Clock In</div>
+                </button>
+                <button class="action-btn action-btn-secondary" (click) = "profie()">
+                    <div class="action-icon">👤</div>
+                    <div>View Profile</div>
+                </button>
+                <button class="action-btn action-btn-secondary" (click) = "reciept()">
+                    <div class="action-icon">🧾</div>
+                    <div>View Receipts</div>
+                </button>
+                <button class="action-btn action-btn-secondary">
+                    <div class="action-icon">📅</div>
+                    <div>Request Leave</div>
+                </button>
+            </div>
+
+            <!-- Statistics -->
+            <h2 class="section-title">📊 This Month's Summary</h2>
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Days Present</div>
+                    <div class="stat-value green">{{present}}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Days Absent</div>
+                    <div class="stat-value red">{{missed}}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Late Arrivals</div>
+                    <div class="stat-value">{{late}}</div>
+                </div>
+            </div>
+
+            <!-- Attendance History -->
+            <h2 class="section-title">📋 Recent Attendance History</h2>
+            <div class="attendance-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Clock In</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceBody">
+                        @for (att of attendance ;track att.created_at){
+                            <tr>
+                            <td>{{att.created_at}}</td>
+                            <td><span class="status-dot present"></span>{{att.status}}</td>
+                            <td><span class="time-badge on-time">{{att.createdAt}}</span></td>
+                        </tr>
+                        }
+                    </tbody> 
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@if (loadstate.error) {
+<div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage.status}}</h3>
+        <p class="error-message">{{errormessage.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+</div>
+} 

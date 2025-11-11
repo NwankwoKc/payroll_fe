@@ -2,6 +2,7 @@ import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Url } from '../url.service';
 import { RouterModule } from '@angular/router';
+import { DataService } from '../data.service';
 @Component({
   selector: 'app-payslips',
   imports: [CommonModule, RouterModule],
@@ -15,12 +16,13 @@ export class Payslips implements OnInit {
   error: string | null = null;
   parameter:string | undefined;
   constructor(
+    private ds:DataService,
     private url: Url,
     private cdr: ChangeDetectorRef
   ) {}
  ngOnInit() {
     // Get user ID from localStorage
-    this.userId = localStorage.getItem('token');
+    this.userId = localStorage.getItem('uid');
     
     if (!this.userId) {
       console.error('No user ID found in localStorage');
@@ -33,7 +35,7 @@ export class Payslips implements OnInit {
     this.getpayslips()
   }
   getpayslips(){
- this.url.getusers<any>('/payments/'+this.userId)
+    this.url.getusers<any>('/payments/'+this.userId)
       .subscribe({
         next: (response) => {
           this.payment = response.data;

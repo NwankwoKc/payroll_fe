@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-dashboard',
   imports: [],
@@ -20,9 +19,18 @@ export class Dashboard {
     this.router.navigate(['/employees'])
   }
   runPayroll(){
-
+    this.router.navigate(['/paysalary'])
   }
   payslips(){
     this.router.navigate(['/payslips'])
+  }
+  clockin(){
+    this.router.navigate(['/attendance'])
+  }
+  attendance(){
+    this.router.navigate(['/'])
+  }
+  createdepartment() {
+    this.router.navigate(['/departments/create'])
   }
 }

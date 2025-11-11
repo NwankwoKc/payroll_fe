@@ -1,4 +1,19 @@
-<div class="employee-container">
+@if (loadstate.loading) {
+    <div class="loading-spinner">
+    <!-- Or download as GIF -->
+    <img src="/loading.gif">
+    </div>
+} @else if (loadstate.error) {
+<div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage.status}}</h3>
+        <p class="error-message">{{errormessage.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+</div>
+} @else {
+    <div class="employee-container">
         <div class="employee-header">
             <h1>Employee Directory</h1>
             <p>Meet our amazing team members</p>
@@ -6,21 +21,19 @@
 
         <div class="employee-content">
             <div class="search-filter-section">
-                <input type="text" class="search-box" placeholder="Search employees by name..." id="searchInput">
-                <select class="filter-select" id="departmentFilter">
-                    <option value="">All Departments</option>
-                    <option value="IT">IT</option>
-                    <option value="HR">HR</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Sales">Sales</option>
-                    <option value="Operations">Operations</option>
-                </select>
-                <select class="filter-select" id="genderFilter">
+                <input type="text" class="search-box" placeholder="Search employees by name..." id="searchInput" [(ngModel)] = "name">
+                <select class="filter-select" id="genderFilter" [(ngModel)] ="gender">
                     <option value="">All Genders</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
+                <select class="filter-select" id="genderFilter" [(ngModel)] ="depart">
+                    <option value="">All Departments</option>
+                    @for (dp of departments; track dp.name) {
+                        <option value={{dp.id}}>{{dp.name}}</option>
+                    }
+                </select>
+                <button (click)="search()">Search</button>
             </div>
 
             <div class="stats-section">
@@ -31,15 +44,15 @@
                         <div class="stat-label">Total Employees</div>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="maleCount">0</span>
+                        <span class="stat-value" id="maleCount">{{male}}</span>
                         <div class="stat-label">Male</div>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="femaleCount">0</span>
+                        <span class="stat-value" id="femaleCount">{{female}}</span>
                         <div class="stat-label">Female</div>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="departmentCount">0</span>
+                        <span class="stat-value" id="departmentCount">{{department}}</span>
                         <div class="stat-label">Departments</div>
                     </div>
                 </div>
@@ -58,9 +71,10 @@
                         </div>
                     </div>
                     <div class="employee-card-footer">
-                        <a class="view-details-btn" [routerLink]="['/profile',employee.id]">View Details</a>
+                        <a class="view-details-btn" [routerLink]="['/profile',employee.id]" style="text-decoration: none;">View Details</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+}

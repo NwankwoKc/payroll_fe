@@ -1,0 +1,130 @@
+@if (loadstate.error) {
+<div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage.status}}</h3>
+        <p class="error-message">{{errormessage.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+</div>
+}
+@if (loadstate.loading) {
+            <!-- In your template -->
+    <div class="loading-spinner">
+    <!-- Or download as GIF -->
+    <img src="/loading.gif">
+    </div>
+} @else {
+<div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <img src= {{data.profileimage}} class="profile-image">
+                <div class="image-upload-overlay" onclick="document.getElementById('fileUpload').click()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                        <path d="M3 9V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V9H3ZM16 13V18H8V13H10.5L12 14.5L13.5 13H16ZM3 7V5C3 3.9 3.9 3 5 3H19C20.1 3 21 3.9 21 5V7H3Z"/>
+                    </svg>
+                </div>
+                <input type="file" id="fileUpload" class="file-input" (change)="onFileSelected($event)" accept="image/*">
+            </div>
+            <div class="profile-name">{{data.firstname}}</div>
+            <div class="profile-title">{{data.employee_department.name}}</div>
+            <div class="profile-department">Information Technology</div>
+        </div>
+        
+        <div class="profile-content">
+            <div class="form-header">
+                <h2>Edit Profile</h2>
+                <p>Update your personal and professional information</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                Profile updated successfully!
+            </div>
+            <div class="error-message" id="errorMessage">
+                Please correct the errors and try again.
+            </div>
+
+            <form id="profileForm" [formGroup]="editedforms">
+                <div class="profile-grid">
+                    <!-- Personal Information -->
+                    <div class="profile-section">
+                        <h3>Personal Information</h3>
+                        <div class="profile-field">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" value={{data.firstname}} formControlName="firstname" required>
+                        </div>
+                        <div class="profile-field">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" value={{data.lastname}} formControlName="lastname"required>
+                        </div>
+                        <div class="profile-field">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" value={{data.email}} formControlName="email" required>
+                        </div>
+                        <div class="profile-field">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" value={{data.phonenumber}} formControlName="phonenumber">
+                        </div>
+                        <div class="profile-field">
+                            <label for="sex">Sex</label>
+                            <select id="sex" name="sex" [(ngModel)] ="data.sex" formControlName="sex">
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Employment Information -->
+                    <div class="profile-section">
+                        <h3>Employment Details</h3>
+                        <div class="profile-field">
+                            <label for="department">Department</label>
+                            <select id="department" name="department" [(ngModel)] = "data.department" formControlName="department">
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Sales">Sales</option>
+                            </select>
+                        </div>
+                        <div class="profile-field">
+                            <label for="position">Position</label>
+                            <input type="text" id="position" name="position" value="Senior Software Engineer" formControlName="position">
+                        </div>
+                        <div class="profile-field">
+                            <label for="hireDate">Hire Date</label>
+                            <input type="date" id="hireDate" name="hireDate" value="2020-03-15" readonly>
+                        </div>
+                        <div class="profile-field">
+                            <label for="salary">Salary</label>
+                            <input type="text" id="salary" name="salary" value="$85,000" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Banking Information -->
+                    <div class="profile-section">
+                        <h3>Banking & Payment</h3>
+                        <div class="profile-field">
+                            <label for="bankName">Bank Name</label>
+                            <input type="text" id="bankName" name="bankName" value={{data.bankname}} formControlName="bankname">
+                        </div>
+                        <div class="profile-field">
+                            <label for="bankCode">Bank Code</label>
+                            <input type="text" id="bankCode" name="bankCode" value={{data.bank_code}} readonly>
+                        </div>
+                        <div class="profile-field">
+                            <label for="Accountnumber">Account Number</label>
+                            <input type="text" id="bankCode" name="Accountnumber" value={{data.account_number}} formControlName="account_number">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary" (click)="savechanges()">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

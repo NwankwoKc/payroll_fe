@@ -1,43 +1,112 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Url } from '../url.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Supabase } from '../supabase';
+import { FormsModule } from '@angular/forms';
+import bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './departments.html',
   styleUrl: './departments.css'
 })
-export class Departments implements OnInit {
-  department: any[] = [];
-  isLoaded = false;
-  error: string | null = null;
 
+export class Departments implements OnInit {
+  department: any[] | undefined;
+  isLoading = signal(false);
+  error = signal(false);
+  deletestate = signal(false)
+  password!:string
+  uid!:string
+
+  errormessage:any;
+  id = localStorage.getItem('uid')
   constructor(
     private url: Url,
-    private cdr: ChangeDetectorRef  // Add ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http:HttpClient,
+    private router:Router,
+    private sb:Supabase
   ) {}
 
   ngOnInit(): void {
     this.getdepartment();
   }
-
-  getdepartment() {
-    this.url.getdepartment<any>('/departments')
-      .subscribe({
-        next: (response) => {
-          this.department = response.data;
-          this.isLoaded = true;
-          this.cdr.detectChanges();  // Force change detection
-          console.log('Departments loaded:', this.department);
-        },
-        error: (err) => {
-          this.error = 'Failed to load departments';
-          this.isLoaded = true;
-          this.cdr.detectChanges();  // Force change detection
-          console.error('Error:', err);
+  departmentapi():Observable<any> | void{
+    let id = localStorage?.getItem('uid')
+    if (!id) {
+      return this.error.set(true)
+    }
+    return this.http.get<any>('http://localhost:3000/api/departments',{
+      headers:{
+        "id":id
+      }
+     })
+  }
+  
+   getdepartment() {
+    this.isLoading.set(true)
+     return this.departmentapi()?.subscribe({
+      next:(res)=>{
+        console.log(res)
+        this.department = res.data;
+        this.isLoading.set(false)
+      },
+      error:(err)=>{
+        console.log(err)
+        this.isLoading.set(false)
+        this.error.set(true)
+        this.errormessage = {
+          status:err.status,
+          message:err.error.message
         }
-      });
+      }
+     })
+  }
+  details(id:string) {
+    console.log(id)
+    this.router.navigate([`/department/${id}`])
+  }
+  delete(id:string) {
+    this.uid = id;
+    this.deletestate.set(true)
+  }
+  cancel() {
+    this.deletestate.set(false)
+  }
+  async dt():Promise<void>{
+    const id = localStorage?.getItem('uid')
+    if(!id) return  
+    const {data,error} = this.sb.getuser(id)
+    if (error) {
+      this.error.set(true)
+      this.errormessage = {
+      status:error.status,
+      message:error.error.message
+      }
+    }
+    let passwrd = data.password
+    const check = bcrypt.compareSync(this.password,passwrd);
+    if (!check) {
+      this.error.set(true)
+        this.errormessage = {
+          status:401,
+          message:"incorrect password"
+        }
+    }
+    
+    this.url.deletedepartement('/departments',this.uid,id).subscribe({
+      next:(res)=>{
+        console.log(res)
+      },
+      error:(err)=>{
+        console.log(err)
+      }
+    })
   }
 }

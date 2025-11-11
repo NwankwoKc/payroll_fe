@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@ang
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Loadstate } from '../loadstate';
 
 @Component({
   selector: 'app-createuser',
@@ -18,14 +19,19 @@ department:any;
 salary:any;
 postion:any;
 error:any
-    constructor(private formBuilder: FormBuilder, private url:Url,private cdr:ChangeDetectorRef,private router:Router) {}
+errormessage:any;
+st = Loadstate;
+
+    constructor(private formBuilder: FormBuilder, private url:Url,private cdr:ChangeDetectorRef,private router:Router,public statemanagement:Loadstate) {}
 
     ngOnInit(): void {
       this.initializeForm();
       this.getdetails();
     }
     async getdetails(){
-        this.url.getdepartment<any>('/departments').subscribe({
+      const id = localStorage.getItem('uid')
+      if (!id) return 
+        this.url.getdepartment<any>('/departments',id).subscribe({
           next:(response)=>{
             this.department = response.data
             this.cdr.detectChanges();  // Force change detection
@@ -33,11 +39,12 @@ error:any
           error:(err) => {
           this.error = 'Failed to load profile data';
           this.cdr.detectChanges();  // Force change detection
+          alert(this.error)
           console.error('Error:', err);
         }
         });
        
-      this.url.getsalaryamount<any>('/salary').subscribe({
+      this.url.getsalaryamount<any>('/salary',id).subscribe({
           next:(response)=>{
             this.salary = response.data
             this.cdr.detectChanges();  // Force change detection
@@ -49,7 +56,7 @@ error:any
         }
         });
        
-        this.url.getpostions<any>('/positions').subscribe({
+        this.url.getpostions<any>('/positions',id).subscribe({
           next:(response)=>{
             this.postion = response.data
             this.cdr.detectChanges();  // Force change detection
@@ -63,8 +70,6 @@ error:any
       }
 
 
-
-
     initializeForm(): void {
       this.signupForm = this.formBuilder.group({
         // Personal Information
@@ -74,7 +79,6 @@ error:any
         password: ['', [Validators.required, Validators.minLength(8)]],
         phonenumber: ['', [Validators.required]],
         sex: ['', [Validators.required]],
-        profileimage: [''],
 
         // Employment Information
         department: ['', [Validators.required]],
@@ -88,42 +92,7 @@ error:any
         bankname: ['', [Validators.required]],
         bank_code: ['', [Validators.required]],
         account_number:['',[Validators.required]],
-
-        // Emergency Contacts
-        emergencyContacts: this.formBuilder.array([
-          this.createContactFormGroup()
-        ])
       });
-    }
-
-    createContactFormGroup(): FormGroup {
-      return this.formBuilder.group({
-        name: ['', [Validators.required]],
-        phone: ['', [Validators.required]]
-      });
-    }
-
-    get emergencyContacts(): FormArray {
-      return this.signupForm.get('emergencyContacts') as FormArray;
-    }
-
-    addContact(): void {
-      this.emergencyContacts.push(this.createContactFormGroup());
-    }
-
-    removeContact(index: number): void {
-      if (this.emergencyContacts.length > 1) {
-        this.emergencyContacts.removeAt(index);
-      }
-    }
-
-    onFileChange(event: any): void {
-      const file = event.target.files[0];
-      if (file) {
-        this.signupForm.patchValue({
-          profileimage: file
-        });
-      }
     }
 
     isFieldInvalid(fieldName: string): boolean {
@@ -131,43 +100,30 @@ error:any
       return !!(field && field.invalid && (field.dirty || field.touched));
     }
 
-    resetForm(): void {
-      this.signupForm.reset();
-      // Reset emergency contacts to have at least one
-      this.signupForm.setControl('emergencyContacts', this.formBuilder.array([
-        this.createContactFormGroup()
-      ]));
-    }
-
     async onSubmit(): Promise<void> {
+      const id = localStorage.getItem('id')
+      if (!id) return 
       if (this.signupForm.valid)  {
+        this.statemanagement.setloading(true);
         console.log('Form submitted with values:', this.signupForm.value);
-      
          try {
-            this.url.login<any>('/user', this.signupForm.value).subscribe({
+            this.url.signup<any>('/user', this.signupForm.value,id).subscribe({
               next:(response)=>{
-            // Handle successful singup
-            console.log('Signup successful:', response);
-            // Store token in localStorage or a state management service
-            localStorage.setItem('uid', response.id);
-            if(response.status === 201){
-              this.router.navigate(['/dashboard'])
-            }
+              // Store token in localStorage or a state management service
+              this.statemanagement.setloading(false)
               },
               error:(err)=>{
                 this.error = 'Failed to load profile data';
                 console.error('Error:', err);
               }
             });
-            
           } catch (error) {
             // Handle signup error
+            this.statemanagement.seterror()
             console.error('Signup failed:', error);
           }
-      
-        alert('Form submitted successfully! Check console for form values.');
       } else {
-        console.log('Form is invalid');
+        alert('Form is invalid');
         this.markFormGroupTouched(this.signupForm);
       }
     }

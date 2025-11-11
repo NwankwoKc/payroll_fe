@@ -1,0 +1,49 @@
+
+@if (loadstate.loading) {
+<div class="loading-spinner">
+  <!-- Or download as GIF -->
+  <img src="/loading.gif">
+</div>
+} @else if (loadstate.error) {
+  <div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage.status}}</h3>
+        <p class="error-message">{{errormessage.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+    </div>
+} @else {
+<div class="departments-container">
+        <div class="departments-header">
+            <h1>Register Department</h1>
+            <p>Create your departments with ease</p>
+        </div>
+
+        <div class="departments-content">
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📄</span>
+                    Create New Department
+                </h2>
+                
+                <form id="documentForm" [formGroup]="createform" (ngSubmit)="submit()">
+                    <div class="form-group">
+                        <label for="docName">Department Name</label>
+                        <input type="text" formControlName = 'name' id="docName" name="name" placeholder="Enter department name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="docLocation">Location</label>
+                        <input type="text" id="docLocation" formControlName = 'location' name="location" placeholder="Enter location" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Create Department</span>
+                        <span class="btn-icon">✓</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

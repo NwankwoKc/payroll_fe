@@ -465,3 +465,63 @@
                 font-size: 28px;
             }
         }
+        .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        }
+        .error-icon {
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 1;
+    }
+
+    .error-content {
+    flex: 1;
+    }
+
+    .error-title {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    }
+
+    .error-message {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    }
+
+    .close-btn {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    }
+
+    .close-btn:hover {
+    background: #f3f4f6;
+    color: #4b5563;
+    }

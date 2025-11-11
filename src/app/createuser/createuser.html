@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angular Signup Form</title>
-</head>
-<body>
+<body>                  
     <div class="signup-container">
         <div class="signup-header">
             <h1>Create Your Account</h1>
@@ -113,21 +106,6 @@
                                 <div class="validation-error" *ngIf="isFieldInvalid('sex')">
                                     Please select your sex
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="profile_image">Profile Image</label>
-                            <div class="file-upload">
-                                <input 
-                                    type="file" 
-                                    id="profile_image" 
-                                    formControlName="profileimage"
-                                    accept="image/*"
-                                    (change)="onFileChange($event)">
-                                <label for="profile_image" class="file-upload-label">
-                                    📷 Click to upload profile image
-                                </label>
                             </div>
                         </div>
                     </div>
@@ -244,46 +222,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Emergency Contacts Section -->
-                    <div class="form-section">
-                        <h3>Emergency Contacts</h3>
-                        
-                        <div class="form-group">
-                            <label>Recipients (Emergency Contacts)</label>
-                            <div formArrayName="emergencyContacts" class="recipients-container">
-                                <div 
-                                    *ngFor="let contact of emergencyContacts.controls; let i = index" 
-                                    [formGroupName]="i" 
-                                    class="recipient-item">
-                                    <input 
-                                        type="text" 
-                                        formControlName="name"
-                                        placeholder="Contact Name">
-                                    <input 
-                                        type="text" 
-                                        formControlName="phone"
-                                        placeholder="Phone Number">
-                                    <button 
-                                        type="button" 
-                                        class="remove-recipient" 
-                                        (click)="removeContact(i)"
-                                        [disabled]="emergencyContacts.length === 1">
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                            <button type="button" class="add-recipient" (click)="addContact()">
-                                + Add Contact
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" (click)="resetForm()">
-                        Reset Form
-                    </button>
                     <button 
                         (click) = "onSubmit()"
                         type="submit" 
@@ -295,3 +236,22 @@
             </form>
         </div>
     </div>
+    <!-- In your template -->
+@if (statemanagement.loading) {
+<div class="loading-spinner">
+  <!-- Or download as GIF -->
+  <img src="/loading.gif">
+</div>
+}
+
+@if (statemanagement.error) {
+    <div class="error-box">
+    <div class="error-icon">!</div>
+    <div class="error-content">
+        <h3 class="error-title">{{errormessage.status}}</h3>
+        <p class="error-message">{{errormessage.message}}</p>
+    </div>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+    </div>
+} 
+

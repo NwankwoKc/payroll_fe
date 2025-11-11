@@ -67,23 +67,19 @@
             <div class="payslip-card" *ngFor="let pay of payment">
                 <div class="status-badge status-paid">{{pay.data.status}}</div>
                 <div class="card-header">
-                    <div class="pay-period-card">July 2024</div>
-                    <div class="pay-date">{{pay.data.recieved_at}}</div>
+                    <div class="pay-date">{{pay.data.createdAt}}</div>
                 </div>
                 <div class="card-body">
                     <div class="pay-summary-quick">
                         <div class="quick-stat">
-                            <span class="quick-stat-value gross">{{pay.data.amount}}</span>
+                            <span class="quick-stat-value gross">${{pay.data.amount}}</span>
                             <span class="quick-stat-label">Gross</span>
                         </div>
                         <div class="quick-stat">
-                            <span class="quick-stat-value deductions">{{pay.data.fees_charged}}</span>
+                            <span class="quick-stat-value deductions">${{pay.data.fees_charged}}</span>
                             <span class="quick-stat-label">Deductions</span>
                         </div>
-                        <div class="quick-stat">
-                            <span class="quick-stat-value net">$5,412</span>
-                            <span class="quick-stat-label">Net Pay</span>
-                        </div>
+                        <a [routerLink]="['/payslip',pay.id]" class="action-btn-small view-btn">View</a>
                     </div>
                     <div class="card-details">
                         <div class="detail-item-card">

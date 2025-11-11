@@ -2,7 +2,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Url } from '../url.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route } from '@angular/router';
+import { DataService } from '../data.service';
+import { Router } from '@angular/router';
+import { Loadstate } from '../loadstate';
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
@@ -11,39 +14,55 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Profile implements OnInit{
   profile: any;
-  isLoaded = false;
-  error: string | null = null;
-  parameter:string | undefined;
-
+  parameter:string | undefined |null;
+  fileName = ''
+  errormessage:any;
   constructor(
     private url: Url,
     private cdr: ChangeDetectorRef,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private router:Router,
+    private dataservice:DataService,
+    public loadstate:Loadstate
   ) {}
 
   ngOnInit(): void {
+    this.loadstate.setloading(true)
     this.getprofile();
   }
 
   getprofile() {
     this.route.params.subscribe(params=>{
-      console.log(params['id'])
       this.parameter = params['id']
     })
+    if(this.parameter == null) this.parameter = localStorage.getItem("uid")
     this.url.getusers<any>('/user/'+this.parameter)
       .subscribe({
         next: (response) => {
+          this.loadstate.setloading(false)
           this.profile = response.data;
-          this.isLoaded = true;
           this.cdr.detectChanges();  // Force change detection
-          console.log('profile data loaded:', this.profile);
         },
         error: (err) => {
-          this.error = 'Failed to load profile data';
-          this.isLoaded = true;
           this.cdr.detectChanges();  // Force change detection
-          console.error('Error:', err);
+          this.loadstate.seterror()
+          this.errormessage = {
+            status:err.status,
+            message:err.error.message
+          }
         }
       });
+  }
+  uploadprofilepicture() {
+     this.route.params.subscribe(params=>{
+      this.parameter = params['id']
+    })
+    this.url.postprofilepic("/user/uploadprofile/"+this.parameter,{})
+  }
+
+  edit(){
+    this.dataservice.changeMessage("New message from Component1");
+    this.dataservice.updateData(this.profile);
+    this.router.navigate(['profile-edit'])
   }
 }
