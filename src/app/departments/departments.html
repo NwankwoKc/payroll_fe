@@ -1,57 +1,12 @@
 @if (error()) {
-<div class="error-box">
-    <div class="error-icon">!</div>
-    <div class="error-content">
-        <h3 class="error-title">{{errormessage.status}}</h3>
-        <p class="error-message">{{errormessage.message}}</p>
-    </div>
-    <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
-</div>
-} @else if (deletestate()) {
-
-    <div class="password-container">
-        <!-- Header -->
-        <div class="password-header">
-            <span class="lock-icon">🔒</span>
-            <h1>Enter Password</h1>
-            <p>Please enter your password to continue</p>
-        </div>
-
-        <!-- Content -->
-        <div class="password-content">
-            <form id="passwordForm">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="password-input-wrapper">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            placeholder="Enter your password" 
-                            [(ngModel)] = "password"
-                            required
-                        >
-                        <button type="button" class="toggle-password" (click)="dt()">
-                            👁️
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    <span>Verify Password</span>
-                    <span>→</span>
-                </button>
-                 <button type="submit" class="submit-btn" (click)="cancel()">
-                    <span>Cancel</span>
-                    <span>→</span>
-                </button>
-
-                <div id="message" class="message"></div>
-            </form>
-        </div>
-    </div>
+<app-error-card [errormessage] = "errormessage"></app-error-card>
+} @else if (state.delete()) {
+<app-verifypasswrd></app-verifypasswrd>
+} @else if (state.success) {
+    <app-success-msg></app-success-msg>
+} @else if (state.error) {
+    <app-dlt-message></app-dlt-message>
 } @else {
-
 <div class="departments-container">
     <div class="departments-header">
         <h1>Our Departments</h1>
@@ -85,8 +40,8 @@
                                 <div class="stat-label">Team Members</div>
                             </div>
                         </div>
-                        <button (click)="details(dep.id)">Details</button>
-                        <button (click)="delete(dep.id)">Delete</button>
+                        <button class="button-small" (click)="details(dep.id)">Details</button>
+                        <button class="button-small" (click)="delete(dep.id)">Delete</button>
                     </div>
                 }
             </div>
@@ -94,9 +49,3 @@
     </div>
 </div>
 }
-
-
-
-
-
-

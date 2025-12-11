@@ -4,17 +4,19 @@ import { Router } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Loadstate } from '../loadstate';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 
 @Component({
   selector: 'app-department',
-  imports: [],
+  imports: [ErrorCard],
   templateUrl: './department.html',
   styleUrl: './department.css'
 })
 export class Department implements OnInit {
   uid!:string;
   data:any;
-  errormessage:any;
+  errormessage!:ErrorMessage;
   emplength!:number;
   dptusers!:Array<any>
 constructor(
@@ -36,13 +38,18 @@ ngOnInit(): void {
     if (id) this.url.getdepartmentspecific<any>('/departments',id,this.uid).subscribe({
       next:(res)=>{
         this.data = res.data
-        this.emplength = this.data?.employees.length
-        this.dptusers = this.data?.department_users
-        this.loadstate.setloading(false)
-        console.log(this.data,this.dptusers)
+        if (this.data.employee) {
+          this.emplength = this.data?.employees.length
+          this.dptusers = this.data?.department_users
+          this.loadstate.setloading(false)
+          console.log(this.data,this.dptusers)
+        } else {
+          this.emplength = 0;
+          this.loadstate.setloading(false)
+        }      
       },
       error:(err)=>{
-        this.loadstate.seterror()
+        this.loadstate.seterror(true)
         console.log(err)
       }
     })

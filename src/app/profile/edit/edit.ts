@@ -7,16 +7,19 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule } from '@angul
 import { Url } from '../../url.service';
 import { Router } from '@angular/router';
 import { Loadstate } from '../../loadstate';
+import { ErrorMessage } from '../../services/interface/error-message';
+import { ErrorCard } from '../../components/error-card/error-card';
+
 @Component({
   selector: 'app-edit',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,ErrorCard],
   templateUrl: './edit.html',
   styleUrl: './edit.css'
 })
 export class Edit implements OnInit,OnDestroy {
   message = '';
   data: any;
-  errormessage:any
+  errormessage!:ErrorMessage
   editedforms!:FormGroup
   private subscription: Subscription = new Subscription();
   constructor(private dataservice:DataService,private url:Url,private cdr:ChangeDetectorRef,private formbuilder:FormBuilder,private rt:Router,public loadstate:Loadstate){}
@@ -36,11 +39,12 @@ export class Edit implements OnInit,OnDestroy {
       this.subscription.unsubscribe();
   } 
   onFileSelected(event:any){
+    this.loadstate.setimgloadstate(true)
+    console.log(this.loadstate.imgstate())
      const files: FileList = event.target.files;
      const locals = localStorage.getItem("uid")
     
     if (files && files.length > 0) {
-      console.log(files[0],locals)
       const formdata = new FormData();
       formdata.append('profileimage',files[0])
       this.url.postprofilepic("/user/uploadprofile/"+locals,formdata).subscribe(
@@ -48,6 +52,7 @@ export class Edit implements OnInit,OnDestroy {
           next:(response:any) =>{
             console.log(response)
             this.data.profileimage = response.fileurl
+            this.loadstate.setimgloadstate(false)
             this.cdr.detectChanges();
           },
           error: (err) => {
@@ -72,7 +77,6 @@ export class Edit implements OnInit,OnDestroy {
   }
 
   savechanges(){
-    console.log(this.editedforms.value)
     this.loadstate.setloading(true)
     let ls = localStorage.getItem('uid')
     this.url.updateuser("/user/"+ls,this.editedforms.value,this.data.password).subscribe({
@@ -82,7 +86,7 @@ export class Edit implements OnInit,OnDestroy {
         this.rt.navigate(["/profile"])
       },
       error:(err:any)=>{
-        this.loadstate.seterror()
+        this.loadstate.seterror(true)
         this.errormessage = {
           status:err.status,
           message:err.error.message

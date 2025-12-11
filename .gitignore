@@ -44,3 +44,8 @@ dist/
 .angular/
 .angular/
 dist/
+
+# System files
+.DS_Store
+Thumbs.db
+.env

@@ -6,16 +6,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder,FormGroup } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 
 @Component({
   selector: 'app-create.department',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,ErrorCard],
   templateUrl: './create.department.html',
   styleUrl: './create.department.css'
 })
 export class CreateDepartment implements OnInit {
 createform!:FormGroup
-errormessage:any;
+errormessage!:ErrorMessage;
 constructor(
   private url:Url,
   public loadstate:Loadstate,
@@ -38,10 +40,9 @@ getval():void {
 submit() {
   this.loadstate.setloading(true)
   const id = localStorage.getItem('uid')
-  console.log(this.createform.value)
-  if (id) this.url.postdepartment('/department',this.createform.value,id).subscribe({
+
+  if (id) this.url.postdepartment('/departments',this.createform.value,id).subscribe({
     next:(el)=>{
-      console.log(el,'department created') 
       this.loadstate.setloading(false);
       this.router.navigate(['/dashboard'])
       
@@ -51,7 +52,7 @@ submit() {
         status:err.status,
         message:err.error.message
       }
-      this.loadstate.seterror();
+      this.loadstate.seterror(true);
 
     }
   })

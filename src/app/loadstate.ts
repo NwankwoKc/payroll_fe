@@ -8,8 +8,12 @@ import { signal } from '@angular/core';
 export class Loadstate {
   public state = signal({
     isloading:false,
-    error:false
+    error:false,
+    success:false
   })
+
+  public deletestate = signal(false)
+  public imgloadstate = signal(false)
 
   setloading(loading:boolean) {
     this.state.update(current=> ({
@@ -18,13 +22,28 @@ export class Loadstate {
     }))
   }
 
-  seterror() {
+  seterror(status:boolean) {
     this.state.update(current=>({
       ...current,
       isloading:false,
-      error:true
+      error:status
     }))
   }
+  
+  setsucces(status:boolean) {
+    this.state.update(current=>({
+      ...current,
+      success:status
+    }))
+  }
+  
+ setdelete(option:boolean) {
+    this.deletestate.set(option)
+ }
+
+ setimgloadstate(status:boolean) {
+    this.imgloadstate.set(status)
+ }
 
   get loading() {
     return this.state().isloading
@@ -32,5 +51,13 @@ export class Loadstate {
   get error() {
     return this.state().error
   }
-
+  get delete() {
+    return this.deletestate
+  }
+  get success() {
+    return this.state().success
+  }
+  get imgstate() {
+    return this.imgloadstate
+  }
 }

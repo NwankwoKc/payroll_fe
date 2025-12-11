@@ -9,11 +9,12 @@ import { Supabase } from '../supabase';
 import { FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { Loadstate } from '../loadstate';
-
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 
 @Component({
   selector: 'app-employees',
-  imports: [CommonModule,RouterModule,FormsModule],
+  imports: [CommonModule,RouterModule,FormsModule,ErrorCard],
   templateUrl: './employees.html',
   styleUrl: './employees.css'
 })
@@ -21,7 +22,7 @@ export class Employees implements OnInit{
 form!:FormGroup
 employees:any
 emp:any
-errormessage:any;
+errormessage!:ErrorMessage;
 lent = 0;
 male:number | undefined;
 female:number | undefined;
@@ -75,7 +76,7 @@ userdetails(){
       }
 
     } catch (error) {
-      this.loadstate.seterror()
+      this.loadstate.seterror(true)
       console.error(error);
     }
   }

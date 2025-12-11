@@ -7,11 +7,17 @@ import { Router } from '@angular/router';
 import { Supabase } from '../supabase';
 import { FormsModule } from '@angular/forms';
 import bcrypt from 'bcryptjs';
+import { Verifypasswrd } from '../components/verifypasswrd/verifypasswrd';
+import { Loadstate } from '../loadstate';
+import { SuccessMsg } from '../components/success-msg/success-msg';
+import { DltMessage } from '../components/dlt-message/dlt-message';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,Verifypasswrd,SuccessMsg,DltMessage,ErrorCard],
   templateUrl: './departments.html',
   styleUrl: './departments.css'
 })
@@ -20,18 +26,19 @@ export class Departments implements OnInit {
   department: any[] | undefined;
   isLoading = signal(false);
   error = signal(false);
-  deletestate = signal(false)
+
   password!:string
   uid!:string
 
-  errormessage:any;
+  errormessage!:ErrorMessage;
   id = localStorage.getItem('uid')
   constructor(
     private url: Url,
     private cdr: ChangeDetectorRef,
     private http:HttpClient,
     private router:Router,
-    private sb:Supabase
+    private sb:Supabase,
+    public state:Loadstate
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +60,6 @@ export class Departments implements OnInit {
     this.isLoading.set(true)
      return this.departmentapi()?.subscribe({
       next:(res)=>{
-        console.log(res)
         this.department = res.data;
         this.isLoading.set(false)
       },
@@ -69,20 +75,20 @@ export class Departments implements OnInit {
      })
   }
   details(id:string) {
-    console.log(id)
     this.router.navigate([`/department/${id}`])
   }
   delete(id:string) {
     this.uid = id;
-    this.deletestate.set(true)
+    this.state.setdelete(true)
   }
   cancel() {
-    this.deletestate.set(false)
+    this.state.setdelete(false)
   }
   async dt():Promise<void>{
     const id = localStorage?.getItem('uid')
     if(!id) return  
-    const {data,error} = this.sb.getuser(id)
+    const {data,error} = await this.sb.getuser(id)
+ 
     if (error) {
       this.error.set(true)
       this.errormessage = {
@@ -91,6 +97,7 @@ export class Departments implements OnInit {
       }
     }
     let passwrd = data.password
+
     const check = bcrypt.compareSync(this.password,passwrd);
     if (!check) {
       this.error.set(true)
@@ -99,7 +106,6 @@ export class Departments implements OnInit {
           message:"incorrect password"
         }
     }
-    
     this.url.deletedepartement('/departments',this.uid,id).subscribe({
       next:(res)=>{
         console.log(res)

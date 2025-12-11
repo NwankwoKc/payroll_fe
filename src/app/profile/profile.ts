@@ -6,9 +6,12 @@ import { ActivatedRoute, Route } from '@angular/router';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 import { Loadstate } from '../loadstate';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
+
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
+  imports: [CommonModule,ErrorCard],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -16,7 +19,7 @@ export class Profile implements OnInit{
   profile: any;
   parameter:string | undefined |null;
   fileName = ''
-  errormessage:any;
+  errormessage!:ErrorMessage;
   constructor(
     private url: Url,
     private cdr: ChangeDetectorRef,
@@ -45,7 +48,7 @@ export class Profile implements OnInit{
         },
         error: (err) => {
           this.cdr.detectChanges();  // Force change detection
-          this.loadstate.seterror()
+          this.loadstate.seterror(true)
           this.errormessage = {
             status:err.status,
             message:err.error.message

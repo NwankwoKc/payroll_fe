@@ -4,9 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
+
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,ErrorCard],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -16,7 +19,7 @@ email: any;
 password: any;
 isLoading = signal(false)
 error = signal(false);
-errormessage:any;
+errormessage!:ErrorMessage;
 @ViewChild('loginForm') loginForm!: NgForm;
 constructor(private urlservice:Url,private router:Router){}
    handleLogin() {
@@ -36,7 +39,6 @@ constructor(private urlservice:Url,private router:Router){}
       localStorage.setItem('uid', response.payload.uid);
       this.isLoading.set(false)
       if (response.payload.role === "Admin") {
-        
         this.router.navigate(['/dashboard'])
       }
       if (response.payload.role === "Employee") {

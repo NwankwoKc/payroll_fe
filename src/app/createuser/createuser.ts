@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Loadstate } from '../loadstate';
-
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 @Component({
   selector: 'app-createuser',
-  imports: [FormsModule,CommonModule,ReactiveFormsModule],
+  imports: [FormsModule,CommonModule,ReactiveFormsModule,ErrorCard],
   templateUrl: './createuser.html',
   styleUrl: './createuser.css'
 })
@@ -19,7 +20,7 @@ department:any;
 salary:any;
 postion:any;
 error:any
-errormessage:any;
+errormessage!:ErrorMessage;
 st = Loadstate;
 
     constructor(private formBuilder: FormBuilder, private url:Url,private cdr:ChangeDetectorRef,private router:Router,public statemanagement:Loadstate) {}
@@ -119,7 +120,7 @@ st = Loadstate;
             });
           } catch (error) {
             // Handle signup error
-            this.statemanagement.seterror()
+            this.statemanagement.seterror(true)
             console.error('Signup failed:', error);
           }
       } else {

@@ -5,10 +5,13 @@ import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Loadstate } from '../loadstate';
 import { Supabase } from '../supabase';
+import { enviroment } from '../../enviroments/enviroment';
+import { ErrorMessage } from '../services/interface/error-message';
+import { ErrorCard } from '../components/error-card/error-card';
 
 @Component({
   selector: 'app-employee-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule,ErrorCard],
   templateUrl: './employee-dashboard.html',
   styleUrl: './employee-dashboard.css'
 })
@@ -19,7 +22,7 @@ export class EmployeeDashboard implements OnInit{
   missed:number | undefined
   present:number | undefined;
   late:number | undefined;
-  errormessage:any
+  errormessage!:ErrorMessage
     constructor(private url:Url,private cdr:ChangeDetectorRef,private router:Router,public loadstate:Loadstate,private sb:Supabase){}
 
     async ngOnInit(): Promise<void> {
@@ -36,12 +39,12 @@ export class EmployeeDashboard implements OnInit{
             status:err.status,
             message:err.error.message
           }
-          this.loadstate.seterror()
+          this.loadstate.seterror(true)
         }
       })
 
       //queries with supabase
-      
+     
       let dt = new Date()
       const {data,error} = await this.sb.getattendance()
       this.missed = dt.getDate() - data.length;

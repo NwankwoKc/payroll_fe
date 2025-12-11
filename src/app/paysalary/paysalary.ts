@@ -4,6 +4,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { Flutterwave } from '../flutterwave';
 import { takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ErrorMessage } from '../services/interface/error-message';
+
 @Component({
   selector: 'app-paysalary',
   templateUrl: './paysalary.html',

@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import {createClient} from '@supabase/supabase-js'
+import { enviroment } from '../enviroments/enviroment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class Supabase {
-  supabasekey = 'https://jtdjpjsmhglhmybdaida.supabase.co'
-  supabaseanonkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0ZGpwanNtaGdsaG15YmRhaWRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwNDkxMTcsImV4cCI6MjA2MTYyNTExN30.cEENj7eoQ2f7cIB3AjXOA7ONElxKYl4vYdEj6om2qpw'
+  supabasekey:string
+  supabaseanonkey:string 
   supabase: any;
   
   constructor() {
-    this.supabase = createClient(this.supabasekey,this.supabaseanonkey)
+    this.supabasekey = enviroment.supabasekey as string
+    this.supabaseanonkey = enviroment.supabaseanonkey as string
+    this.supabase = createClient(this.supabasekey,this.supabaseanonkey,{
+      auth:{
+        autoRefreshToken:false,
+        persistSession:false
+      }
+    })
   }
 
   getattendance() {
@@ -33,7 +42,11 @@ export class Supabase {
   getuser(id:string) {
     return this.supabase
     .from('user')
-    .select("*")
+    .select('*')
     .eq('id',id)
+    .single()
+  }
+  getpasswrd(id:string) {
+    return this.supabase.auth.admin.getUserById(id)
   }
 }
