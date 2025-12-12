@@ -35,10 +35,11 @@ ngOnInit(): void {
       this.uid = params['id']
     })
     const id = localStorage.getItem('uid')
-    if (id) this.url.getdepartmentspecific<any>('/departments',id,this.uid).subscribe({
+    if (!id) return   
+    this.url.getdepartmentspecific<any>('/departments',id,this.uid).subscribe({
       next:(res)=>{
         this.data = res.data
-        if (this.data.employee) {
+        if (this.data.employees) {
           this.emplength = this.data?.employees.length
           this.dptusers = this.data?.department_users
           this.loadstate.setloading(false)
@@ -50,7 +51,6 @@ ngOnInit(): void {
       },
       error:(err)=>{
         this.loadstate.seterror(true)
-        console.log(err)
       }
     })
   }

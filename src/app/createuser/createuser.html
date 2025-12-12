@@ -1,4 +1,12 @@
-<body>                  
+@if (statemanagement.loading) {
+<div class="loading-spinner">
+  <!-- Or download as GIF -->
+  <img src="/loading.gif">
+</div>
+} @else if (statemanagement.error) {
+<app-error-card [errormessage] = "errormessage"></app-error-card>
+} @else {
+                
     <div class="signup-container">
         <div class="signup-header">
             <h1>Create Your Account</h1>
@@ -154,6 +162,8 @@
                                 <input 
                                     type="date" 
                                     id="hire_date" 
+                                    min={{today}}
+                                    max={{today}}
                                     formControlName="hiredate">
                                 <div class="validation-error" *ngIf="isFieldInvalid('hiredate')">
                                     Hire date is required
@@ -236,15 +246,5 @@
             </form>
         </div>
     </div>
-    <!-- In your template -->
-@if (statemanagement.loading) {
-<div class="loading-spinner">
-  <!-- Or download as GIF -->
-  <img src="/loading.gif">
-</div>
 }
-
-@if (statemanagement.error) {
-<app-error-card [errormessage] = "errormessage"></app-error-card>
-} 
 

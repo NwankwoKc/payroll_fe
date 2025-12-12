@@ -22,6 +22,8 @@ postion:any;
 error:any
 errormessage!:ErrorMessage;
 st = Loadstate;
+today!:string
+
 
     constructor(private formBuilder: FormBuilder, private url:Url,private cdr:ChangeDetectorRef,private router:Router,public statemanagement:Loadstate) {}
 
@@ -72,6 +74,7 @@ st = Loadstate;
 
 
     initializeForm(): void {
+       this.today = new Date().toISOString().split('T')[0]
       this.signupForm = this.formBuilder.group({
         // Personal Information
         firstname: ['', [Validators.required]],
@@ -102,26 +105,28 @@ st = Loadstate;
     }
 
     async onSubmit(): Promise<void> {
-      const id = localStorage.getItem('id')
+      const id = localStorage.getItem('uid')
       if (!id) return 
       if (this.signupForm.valid)  {
         this.statemanagement.setloading(true);
-        console.log('Form submitted with values:', this.signupForm.value);
          try {
             this.url.signup<any>('/user', this.signupForm.value,id).subscribe({
               next:(response)=>{
               // Store token in localStorage or a state management service
               this.statemanagement.setloading(false)
+              this.router.navigate(['/dashboard'])
               },
               error:(err)=>{
-                this.error = 'Failed to load profile data';
-                console.error('Error:', err);
+                this.errormessage = {
+                status:err.status,
+                message:err.error.message
+                } 
+                this.statemanagement.seterror(true)
               }
             });
           } catch (error) {
             // Handle signup error
             this.statemanagement.seterror(true)
-            console.error('Signup failed:', error);
           }
       } else {
         alert('Form is invalid');
@@ -145,5 +150,4 @@ st = Loadstate;
         }
       });
     }
-
-}
+  }

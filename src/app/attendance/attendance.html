@@ -1,9 +1,8 @@
-@if (loadstate.loading) {
-<app-loading-gif></app-loading-gif>
-}
 @if (loadstate.error) {
 <app-error-card [errormessage] = "errormessage"></app-error-card>
-}  @else {
+} @else if (loadstate.loading) {
+    <app-loading-gif></app-loading-gif>
+} @else {
 <div class="attendance-container">
         <div class="attendance-header">
             <h1>Attendance System</h1>
@@ -43,9 +42,6 @@
                             <th>Clock In</th>
                         </tr>
                     </thead>
-                    <tbody id="historyTableBody">
-                        <!-- History will be populated by JavaScript -->
-                    </tbody>
                 </table>
             </div>
         </div>
