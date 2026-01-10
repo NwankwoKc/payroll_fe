@@ -50,10 +50,8 @@ export class Departments implements OnInit {
       return this.error.set(true)
     }
     return this.http.get<any>('http://localhost:3000/api/departments',{
-      headers:{
-        "id":id
-      }
-     })
+      withCredentials:true
+    })
   }
   
    getdepartment() {

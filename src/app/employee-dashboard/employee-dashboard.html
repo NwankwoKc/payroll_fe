@@ -5,7 +5,8 @@
 } @else {
     <div class="container">
         <div class="header">
-            <div class="header-left">
+            @if (profile){
+                <div class="header-left">
                 <div>
                      <img src= {{profile.profileimage}} class="profile-image">
                 </div>
@@ -15,6 +16,7 @@
                     <p style="margin-top: 5px;"><span class="status-badge">● Active</span></p>
                 </div>
             </div>
+            }
         </div>
 
         <div class="content">

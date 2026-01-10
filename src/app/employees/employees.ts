@@ -18,6 +18,7 @@ import { ErrorCard } from '../components/error-card/error-card';
   templateUrl: './employees.html',
   styleUrl: './employees.css'
 })
+
 export class Employees implements OnInit{
 form!:FormGroup
 employees:any
@@ -55,7 +56,7 @@ userdetails(){
       // Fetch data
       const id = localStorage.getItem('uid')
       if(!id) return
-      const response = await this.url.getdepartment<{data: any[]}>('/user',id)
+      const response = await this.url.getdepartment<{data: any[]}>('/users',id)
         .toPromise();
       // Update state
       this.employees = response?.data || [];
@@ -75,9 +76,13 @@ userdetails(){
         console.log("dp error has occured", error)
       }
 
-    } catch (error) {
+    } catch (error:any) {
+      console.log(error,'this err')
       this.loadstate.seterror(true)
-      console.error(error);
+      this.errormessage = {
+        status:error.error.status,
+        message:error.error.message
+      }
     }
   }
   search() {

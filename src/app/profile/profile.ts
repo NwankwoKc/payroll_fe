@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Url } from '../url.service';
@@ -39,7 +38,7 @@ export class Profile implements OnInit{
       this.parameter = params['id']
     })
     if(this.parameter == null) this.parameter = localStorage.getItem("uid")
-    this.url.getusers<any>('/user/'+this.parameter)
+    this.url.getusers<any>('/user/')
       .subscribe({
         next: (response) => {
           this.loadstate.setloading(false)

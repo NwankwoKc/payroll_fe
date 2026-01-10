@@ -8,7 +8,7 @@ import { Supabase } from '../supabase';
 import { enviroment } from '../../enviroments/enviroment';
 import { ErrorMessage } from '../services/interface/error-message';
 import { ErrorCard } from '../components/error-card/error-card';
-
+import { UserProfile } from '../services/interface/interfaces';
 @Component({
   selector: 'app-employee-dashboard',
   imports: [CommonModule,ErrorCard],
@@ -16,8 +16,8 @@ import { ErrorCard } from '../components/error-card/error-card';
   styleUrl: './employee-dashboard.css'
 })
 export class EmployeeDashboard implements OnInit{
-  profile:any;
-  attendance:any;
+  profile!:UserProfile<any>;
+  attendance!:any[];
   error:Error | undefined
   missed:number | undefined
   present:number | undefined;
@@ -26,12 +26,12 @@ export class EmployeeDashboard implements OnInit{
     constructor(private url:Url,private cdr:ChangeDetectorRef,private router:Router,public loadstate:Loadstate,private sb:Supabase){}
 
     async ngOnInit(): Promise<void> {
-      this.loadstate.setloading(true);
-      const lstorage = localStorage.getItem('uid')
-      await this.url.getusers<any>('/user/'+lstorage).subscribe({
+     this.loadstate.setloading(true)
+      this.url.getusers<any>('/user').subscribe({
         next:(response)=>{
-          this.loadstate.setloading(false)
           this.profile = response?.data
+          let id_save = this.profile.id
+          localStorage.setItem('uid',id_save)
           this.cdr.detectChanges()
         },
         error: (err:any) => {
@@ -44,21 +44,18 @@ export class EmployeeDashboard implements OnInit{
       })
 
       //queries with supabase
-     
+  
       let dt = new Date()
       const {data,error} = await this.sb.getattendance()
       this.missed = dt.getDate() - data.length;
       this.present = data.length;
-
-      let lt = data.filter(function(d:any):boolean{
-        if (d.status = "late") {
-          return true
-        }
-        return false
+      this.late = 0;
+      data.map((el:any)=>{
+        if(el.status === 'late' && this.late) this.late++
       })
-      this.late = lt.length
+
       this.attendance = data;
-      this.cdr.detectChanges()
+      this.loadstate.setloading(false)
     }
 
   profie(){

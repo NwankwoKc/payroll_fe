@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ErrorMessage } from '../services/interface/error-message';
 import { ErrorCard } from '../components/error-card/error-card';
+import { enviroment } from '../../enviroments/enviroment';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,19 @@ import { ErrorCard } from '../components/error-card/error-card';
   styleUrl: './login.css'
 })
 export class Login {
+
 LoginForm: any;
 email: any;
 password: any;
 isLoading = signal(false)
 error = signal(false);
+oath!:string 
 errormessage!:ErrorMessage;
 @ViewChild('loginForm') loginForm!: NgForm;
-constructor(private urlservice:Url,private router:Router){}
+constructor(private urlservice:Url,private router:Router){
+  this.oath = enviroment.oauth2 as string
+}
+ 
    handleLogin() {
    if (this.loginForm.valid) {
        this.email = this.loginForm.value.email;
@@ -36,7 +42,7 @@ constructor(private urlservice:Url,private router:Router){}
         next:(response)=>{
       // Handle successful login
       // Store token in localStorage or a state management service
-      localStorage.setItem('uid', response.payload.uid);
+      // localStorage.setItem('uid', response.payload.uid);
       this.isLoading.set(false)
       if (response.payload.role === "Admin") {
         this.router.navigate(['/dashboard'])
@@ -55,7 +61,6 @@ constructor(private urlservice:Url,private router:Router){}
         }
       }
       });
-      
     }
   }
 }

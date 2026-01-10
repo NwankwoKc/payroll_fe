@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {createClient} from '@supabase/supabase-js'
+import {createClient, SupabaseClient} from '@supabase/supabase-js'
 import { enviroment } from '../enviroments/enviroment';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { enviroment } from '../enviroments/enviroment';
 export class Supabase {
   supabasekey:string
   supabaseanonkey:string 
-  supabase: any;
+  supabase: SupabaseClient;
   
   constructor() {
     this.supabasekey = enviroment.supabasekey as string
@@ -26,7 +26,7 @@ export class Supabase {
     const now = new Date()
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
     const firstDayNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-    return this.supabase 
+    return this.supabase  //query for attendance for the month by using id
       .from('attendance')
       .select("*")
       .eq('employee_id',lstorage)

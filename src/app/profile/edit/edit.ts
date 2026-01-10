@@ -42,21 +42,23 @@ export class Edit implements OnInit,OnDestroy {
     this.loadstate.setimgloadstate(true)
     console.log(this.loadstate.imgstate())
      const files: FileList = event.target.files;
-     const locals = localStorage.getItem("uid")
     
     if (files && files.length > 0) {
       const formdata = new FormData();
       formdata.append('profileimage',files[0])
-      this.url.postprofilepic("/user/uploadprofile/"+locals,formdata).subscribe(
+      this.url.postprofilepic("/user/uploadprofile",formdata).subscribe(
         {
           next:(response:any) =>{
-            console.log(response)
             this.data.profileimage = response.fileurl
             this.loadstate.setimgloadstate(false)
             this.cdr.detectChanges();
           },
           error: (err) => {
-           console.log(err)
+            this.loadstate.seterror(true)
+            this.errormessage = {
+            status:err.status,
+            message:err.error.message
+            }
           }
         }
       )
@@ -79,7 +81,7 @@ export class Edit implements OnInit,OnDestroy {
   savechanges(){
     this.loadstate.setloading(true)
     let ls = localStorage.getItem('uid')
-    this.url.updateuser("/user/"+ls,this.editedforms.value,this.data.password).subscribe({
+    this.url.updateuser("/user",this.editedforms.value,this.data.password).subscribe({
       next:(response:any)=>{
         this.loadstate.setloading(false)
         this.data = response.user

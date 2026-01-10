@@ -54,7 +54,7 @@ export class Flutterwave {
 
   
   this.socket$.subscribe({
-    next:(value: any) => console.log(value),
+    next:(value: string) => console.log(value),
     error:(err:any) => console.log(err)
   })
 }
